@@ -1,0 +1,8 @@
+# Japanese strings go here for Rails i18n
+ja:
+  field_notes_created_by: コメント作成者
+  field_last_notes_created_by: 最新のコメントの作成者
+  field_notes_updated_by: コメント更新者
+  field_last_notes_updated_by: 最新のコメントの更新者
+  field_notes_created_or_updated_by: コメント作成者または更新者
+  field_last_notes_created_or_updated_by: 最新のコメントの作成者または更新者

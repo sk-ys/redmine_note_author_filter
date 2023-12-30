@@ -1,0 +1,8 @@
+# English strings go here for Rails i18n
+en:
+  field_notes_created_by: Notes created by
+  field_last_notes_created_by: Last notes created by
+  field_notes_updated_by: Notes updated by
+  field_last_notes_updated_by: Last notes updated by
+  field_notes_created_or_updated_by: Notes created or updated by
+  field_last_notes_created_or_updated_by: Last notes created or updated by
