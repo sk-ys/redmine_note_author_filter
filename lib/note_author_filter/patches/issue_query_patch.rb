@@ -4,11 +4,13 @@ module NoteAuthorFilter
       extend ActiveSupport::Concern
 
       included do
-        prepend InstanceOverwriteMethods
         include InstanceMethods
 
         alias_method :initialize_available_filters_without_notes_author_filter, :initialize_available_filters
         alias_method :initialize_available_filters, :initialize_available_filters_with_notes_author_filter
+        
+        alias_method :build_from_params_without_notes_author_filter, :build_from_params
+        alias_method :build_from_params, :build_from_params_with_notes_author_filter
 
         class_attribute :notes_author_filter_keys
         self.notes_author_filter_keys = [
@@ -24,9 +26,11 @@ module NoteAuthorFilter
           ] : [])
       end
 
-      module InstanceOverwriteMethods
-        def build_from_params(params, defaults = {})
-          super
+      module InstanceMethods
+        def build_from_params_with_notes_author_filter(params, defaults = {})
+          Redmine::VERSION::MAJOR > 4 ?
+            build_from_params_without_notes_author_filter(params, defaults) :
+            build_from_params_without_notes_author_filter(params)
 
           notes_author_filter_keys.each do |notes_author_filter_key|
             add_filter notes_author_filter_key, '=', User
@@ -67,9 +71,7 @@ module NoteAuthorFilter
           subquery = generate_subquery(field, operator, value, true, true, true)
           "#{neg} EXISTS (#{subquery})"
         end
-      end
-
-      module InstanceMethods
+        
         def initialize_available_filters_with_notes_author_filter
           initialize_available_filters_without_notes_author_filter
 
