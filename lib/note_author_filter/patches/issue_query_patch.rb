@@ -6,14 +6,14 @@ module NoteAuthorFilter
       included do
         include InstanceMethods
 
-        alias_method :initialize_available_filters_without_notes_author_filter, :initialize_available_filters
-        alias_method :initialize_available_filters, :initialize_available_filters_with_notes_author_filter
-        
-        alias_method :build_from_params_without_notes_author_filter, :build_from_params
-        alias_method :build_from_params, :build_from_params_with_notes_author_filter
+        alias_method :initialize_available_filters_without_note_author_filter, :initialize_available_filters
+        alias_method :initialize_available_filters, :initialize_available_filters_with_note_author_filter
 
-        class_attribute :notes_author_filter_keys
-        self.notes_author_filter_keys = [
+        alias_method :build_from_params_without_note_author_filter, :build_from_params
+        alias_method :build_from_params, :build_from_params_with_note_author_filter
+
+        class_attribute :note_author_filter_keys
+        self.note_author_filter_keys = [
           "notes_created_by",
           "last_notes_created_by"
         ] +
@@ -27,13 +27,13 @@ module NoteAuthorFilter
       end
 
       module InstanceMethods
-        def build_from_params_with_notes_author_filter(params, defaults = {})
+        def build_from_params_with_note_author_filter(params, defaults = {})
           Redmine::VERSION::MAJOR > 4 ?
-            build_from_params_without_notes_author_filter(params, defaults) :
-            build_from_params_without_notes_author_filter(params)
+            build_from_params_without_note_author_filter(params, defaults) :
+            build_from_params_without_note_author_filter(params)
 
-          notes_author_filter_keys.each do |notes_author_filter_key|
-            add_filter notes_author_filter_key, '=', User
+          note_author_filter_keys.each do |note_author_filter_key|
+            add_filter note_author_filter_key, '=', User
           end
 
           self
@@ -71,12 +71,12 @@ module NoteAuthorFilter
           subquery = generate_subquery(field, operator, value, true, true, true)
           "#{neg} EXISTS (#{subquery})"
         end
-        
-        def initialize_available_filters_with_notes_author_filter
-          initialize_available_filters_without_notes_author_filter
 
-          notes_author_filter_keys.each do |notes_author_filter_key|
-            add_available_filter(notes_author_filter_key, type: :list, values: lambda {author_values})
+        def initialize_available_filters_with_note_author_filter
+          initialize_available_filters_without_note_author_filter
+
+          note_author_filter_keys.each do |note_author_filter_key|
+            add_available_filter(note_author_filter_key, type: :list, values: lambda {author_values})
           end
         end
       end

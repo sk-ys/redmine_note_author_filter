@@ -13,7 +13,7 @@ module NoteAuthorFilter
       module InstanceMethods
         def statement_with_notes_updated_by
           # Replace "me" value to User.current
-          IssueQuery::notes_author_filter_keys.each do |key|
+          IssueQuery::note_author_filter_keys.each do |key|
             if filters[key].is_a?(Hash)
               filters[key][:values] = filters[key][:values].map { |v| v == "me" ? User.current.id.to_s : v }
             end
